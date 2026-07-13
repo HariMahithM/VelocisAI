@@ -1,39 +1,9 @@
-import { useState } from "react";
-import UploadVideo from "./components/UploadVideo";
+import "./index.css";
+import UploadPage from "./pages/UploadPage";
 
 function App() {
 
-    const [video,setVideo] = useState("");
-
-    return (
-
-        <div
-        style={{
-            padding:30
-        }}
-        >
-
-            <h1>VelocisAI</h1>
-
-            <UploadVideo
-                setVideo={setVideo}
-            />
-
-            {
-                video && (
-
-                    <video
-                        controls
-                        width="900"
-                        src={video}
-                    />
-
-                )
-            }
-
-        </div>
-
-    );
+    return <UploadPage />;
 
 }
 
