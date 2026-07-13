@@ -1,36 +1,40 @@
-import { useEffect, useState } from "react";
-import api from "./services/api";
+import { useState } from "react";
+import UploadVideo from "./components/UploadVideo";
 
 function App() {
 
-  const [message, setMessage] = useState("");
+    const [video,setVideo] = useState("");
 
-  useEffect(() => {
-    api.get("/")
-      .then((res) => {
-        setMessage(res.data.message);
-      })
-      .catch(() => {
-        setMessage("Backend Offline");
-      });
-  }, []);
+    return (
 
-  return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        gap: "20px"
-      }}
-    >
-      <h1>VelocisAI</h1>
+        <div
+        style={{
+            padding:30
+        }}
+        >
 
-      <h2>{message}</h2>
-    </div>
-  );
+            <h1>VelocisAI</h1>
+
+            <UploadVideo
+                setVideo={setVideo}
+            />
+
+            {
+                video && (
+
+                    <video
+                        controls
+                        width="900"
+                        src={video}
+                    />
+
+                )
+            }
+
+        </div>
+
+    );
+
 }
 
 export default App;
