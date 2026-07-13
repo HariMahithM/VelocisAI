@@ -1,0 +1,29 @@
+# Python
+backend/venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node
+frontend/node_modules/
+
+# Videos
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# YOLO Models
+*.pt
+
+# Generated files
+backend/uploads/
+backend/outputs/
+backend/reports/
+backend/snapshots/
+
+# Environment
+.env
+
+# VS Code
+.vscode/
