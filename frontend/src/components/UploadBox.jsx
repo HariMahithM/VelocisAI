@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 import ProgressBar from "./ProgressBar";
@@ -14,6 +15,7 @@ uploadedFile,
 setUploadedFile
 
 }){
+const navigate = useNavigate();
 
 const [metadata,setMetadata]=useState(null);
 
@@ -51,61 +53,80 @@ duration:video.duration
 
 };
 
-const uploadVideo=async()=>{
+const uploadVideo = async () => {
 
-if(!uploadedFile){
+    if (!uploadedFile) {
 
-alert("Choose a video");
+        alert("Choose a video");
 
-return;
+        return;
 
-}
+    }
 
-const formData=new FormData();
+    const formData = new FormData();
 
-formData.append("video",uploadedFile);
+    formData.append("video", uploadedFile);
 
-try{
+    try {
 
-await api.post(
+        const response = await api.post(
 
-"/upload",
+            "/upload",
 
-formData,
+            formData,
 
-{
+            {
 
-headers:{
+                headers: {
 
-"Content-Type":"multipart/form-data"
+                    "Content-Type": "multipart/form-data"
 
-},
+                },
 
-onUploadProgress:(event)=>{
+                onUploadProgress: (event) => {
 
-const percent=Math.round(
+                    const percent = Math.round(
 
-(event.loaded*100)/event.total
+                        (event.loaded * 100) / event.total
 
-);
+                    );
 
-setProgress(percent);
+                    setProgress(percent);
 
-}
+                }
 
-}
+            }
 
-);
+        );
 
-alert("Upload Successful");
+        // Extract first frame
+        const frameResponse = await api.post(
+            "/api/extract-frame",
+            {
+                filename: response.data.filename
+            }
+        );
 
-}
+        const frameURL =
+            "http://localhost:5000/frames/" +
+            frameResponse.data.frame;
 
-catch{
+        navigate("/draw", {
+            state: {
+                frame: frameURL,
+                video: response.data.filename
+            }
+        });
 
-alert("Upload Failed");
+    }
 
-}
+    catch (err) {
+
+        console.log(err);
+
+        alert("Upload Failed");
+
+    }
 
 };
 

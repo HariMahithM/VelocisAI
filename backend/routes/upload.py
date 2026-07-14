@@ -56,6 +56,11 @@ def upload_video():
     file.save(filepath)
 
     return jsonify({
-        "success": True,
-        "filename": filename
+
+    "success":True,
+
+    "message":"Video Uploaded",
+
+    "filename":filename
+
     })
