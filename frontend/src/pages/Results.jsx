@@ -1,46 +1,78 @@
 import { useLocation } from "react-router-dom";
-import SnapshotCard from "../components/SnapshotCard";
+
+import DownloadButtons from "../components/DownloadButtons";
+import SnapshotGallery from "../components/SnapshotGallery";
+import StatsCard from "../components/StatsCard";
 
 function Results() {
+
   const { state } = useLocation();
 
-  if (!state) {
-    return <h2>No Results Found</h2>;
-  }
+  if (!state)
+    return <h2>No Results</h2>;
 
-  const { outputVideo, snapshots } = state;
+  const {
+    outputVideo,
+    snapshots,
+  } = state;
+
+  const highestSpeed =
+    snapshots.length
+      ? Math.max(...snapshots.map(s => s.speed))
+      : 0;
 
   return (
-    <div className="results-page">
 
-      <h1>Detection Results</h1>
+    <div
+      style={{
+        padding: "40px",
+      }}
+    >
 
-      <video width="900" controls>
-  <source
-    src={`http://localhost:5000/${outputVideo}`}
-    type="video/mp4"
-  />
-  Your browser does not support the video tag.
-</video>
+      <h1>Vehicle Speed Detection Results</h1>
 
-      <h2>
-        Overspeed Vehicles ({snapshots.length})
-      </h2>
+      <video
+        controls
+        width="100%"
+      >
+        <source
+          src={`http://localhost:5000/${outputVideo}`}
+          type="video/mp4"
+        />
+      </video>
 
-      <div className="snapshot-grid">
-        {snapshots.map((item, index) => (
-          <SnapshotCard
-            key={index}
-            snapshot={item}
-          />
-        ))}
+      <div
+        style={{
+          display: "flex",
+          gap: "20px",
+          margin: "30px 0",
+        }}
+      >
+
+        <StatsCard
+          title="Overspeed Vehicles"
+          value={snapshots.length}
+          color="#ef4444"
+        />
+
+        <StatsCard
+          title="Highest Speed"
+          value={`${highestSpeed} km/h`}
+          color="#3b82f6"
+        />
+
       </div>
 
-      <button>
-        Download PDF Report
-      </button>
+      <SnapshotGallery
+        snapshots={snapshots}
+      />
+
+      <DownloadButtons
+        video={outputVideo}
+      />
 
     </div>
+
   );
 }
 
