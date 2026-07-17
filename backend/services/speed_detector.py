@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-model = YOLO("yolo11x.pt")
+model = YOLO("yolo11m.pt")
 
 os.makedirs("snapshots", exist_ok=True)
 

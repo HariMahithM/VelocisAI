@@ -28,15 +28,14 @@ def uploads(filename):
 def frames(filename):
     return send_from_directory("frames", filename)
 
-@app.route("/outputs/<filename>")
-def outputs(filename):
-    return send_from_directory("outputs", filename)
 
-
-@app.route("/snapshots/<filename>")
+@app.route("/snapshots/<path:filename>")
 def snapshots(filename):
     return send_from_directory("snapshots", filename)
 
+@app.route("/outputs/<path:filename>")
+def outputs(filename):
+    return send_from_directory("outputs", filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
