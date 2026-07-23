@@ -205,7 +205,39 @@ def process_video(
     cap.release()
     out.release()
 
+    vehicle_count = len(cross_time)
+
+    overspeed_count = len(snapshots)
+
+    speeds = []
+
+    for vehicle in cross_time.values():
+
+        if vehicle["speed"] is not None:
+            speeds.append(vehicle["speed"])
+
+    average_speed = 0
+
+    max_speed = 0
+
+    if speeds:
+
+        average_speed = sum(speeds)/len(speeds)
+
+        max_speed = max(speeds)
+    
     return {
-    "output_video": output_path,
-    "snapshots": snapshots
-    }
+
+        "output_video": output_path,
+
+        "snapshots": snapshots,
+
+        "vehicle_count": vehicle_count,
+
+        "average_speed": round(average_speed,1),
+
+        "max_speed": round(max_speed,1),
+
+        "overspeed_count": overspeed_count
+
+}

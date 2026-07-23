@@ -1,6 +1,10 @@
 import os
 from flask import Blueprint, request, jsonify
+from numpy import record
 from services.speed_detector import process_video
+from models import Detection
+from database import db
+
 
 process_bp = Blueprint("process", __name__)
 
@@ -46,6 +50,23 @@ def process():
             distance=distance,
             speed_limit=speed_limit
         )
+        record = Detection(
+
+            video_name=video,
+
+            average_speed=result["average_speed"],
+
+            max_speed=result["max_speed"],
+
+            vehicle_count=result["vehicle_count"],
+
+            overspeed_count=result["overspeed_count"]
+
+        )
+
+        db.session.add(record)
+
+        db.session.commit()
 
         return jsonify({
             "success": True,

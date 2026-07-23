@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DrawLines from "./pages/DrawLines";
+import History from "./pages/History";
 import Results from "./pages/Results";
 import UploadPage from "./pages/UploadPage";
 
@@ -23,7 +24,7 @@ function App() {
           path="/results"
           element={<Results/>}
         />
-
+        <Route path="/history" element={<History />} />
       </Routes>
 
     </BrowserRouter>

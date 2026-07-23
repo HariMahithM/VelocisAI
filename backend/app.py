@@ -1,16 +1,31 @@
 from flask import Flask, send_from_directory
 from flask_cors import CORS
-
+from models import Detection
+from database import db
 from routes.process import process_bp
 from routes.upload import upload_bp
 from routes.frame import frame_bp
+from routes.history import history_bp
 
 app = Flask(__name__)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///traffic.db"
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+
 CORS(app)
+
+
 
 app.register_blueprint(upload_bp)
 app.register_blueprint(frame_bp)
 app.register_blueprint(process_bp)
+app.register_blueprint(history_bp)
 
 @app.route("/")
 def home():
